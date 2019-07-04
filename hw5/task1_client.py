@@ -63,5 +63,3 @@ if __name__ == '__main__':
     # client.put('eardrum.cpu', 3, timestamp=1150864250)
     # client.put('eardrum.cpu', 4, timestamp=1150864251)
     # client.put('eardrum.memory', 4200000)
-
-
