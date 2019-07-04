@@ -38,7 +38,7 @@ class ServerSocket:
         if data in self.rsp_map:
             self.response_buf.append(self.rsp_map[data])
         else:
-            raise ServerSocketException(f"запрос не соответствует протоколу: {data}")
+            raise ServerSocketException(f"the request does not match the protocol: {data}")
 
     def recv(self, bytes_count):
         try:
