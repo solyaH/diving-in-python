@@ -70,7 +70,7 @@ class ClientServerProtocol(asyncio.Protocol):
         self.transport.write(resp.encode())
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     coro = loop.create_server(
         ClientServerProtocol,
