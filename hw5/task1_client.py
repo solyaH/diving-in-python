@@ -52,15 +52,16 @@ class Client:
             return new_data
 
 
-# if __name__ == '__main__':
-client = Client('127.0.0.1', 8181, timeout=15)
-# client.put('palm.cpu', 0.5, timestamp=1150864247)
-# client.put('palm.cpu', 2.0, timestamp=1150864248)
-# client.put('palm.cpu', 0.5, timestamp=1150864248)
-#
-# client.put('eardrum.cpu', 3, timestamp=1150864250)
-# client.put('eardrum.cpu', 4, timestamp=1150864251)
-# client.put('eardrum.memory', 4200000)
+if __name__ == '__main__':
+    client = Client('127.0.0.1', 8181, timeout=15)
+    print(client.get('got test_key\n'))
+    print(client.get('get test_key\n'))
+    # client.put('palm.cpu', 0.5, timestamp=1150864247)
+    # client.put('palm.cpu', 2.0, timestamp=1150864248)
+    # client.put('palm.cpu', 0.5, timestamp=1150864248)
+    #
+    # client.put('eardrum.cpu', 3, timestamp=1150864250)
+    # client.put('eardrum.cpu', 4, timestamp=1150864251)
+    # client.put('eardrum.memory', 4200000)
 
-print(client.get('got test_key\n'))
-print(client.get('get test_key\n'))
+

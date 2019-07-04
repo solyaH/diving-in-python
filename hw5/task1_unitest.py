@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 from collections import deque
 
+# импорт модуля с решением
 from task1_client import Client, ClientError
 
 
@@ -37,13 +38,13 @@ class ServerSocket:
         if data in self.rsp_map:
             self.response_buf.append(self.rsp_map[data])
         else:
-            raise ServerSocketException(f"Р·Р°РїСЂРѕСЃ РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РїСЂРѕС‚РѕРєРѕР»Сѓ: {data}")
+            raise ServerSocketException(f"запрос не соответствует протоколу: {data}")
 
     def recv(self, bytes_count):
         try:
             rsp = self.response_buf.popleft()
         except IndexError:
-            raise ServerSocketException("РЅРµС‚ РґР°РЅРЅС‹С… РІ СЃРѕРєРµС‚Рµ РґР»СЏ С‡С‚РµРЅРёСЏ РѕС‚РІРµС‚Р°")
+            raise ServerSocketException("no data in the socket to read the response")
 
         return rsp
 
@@ -83,7 +84,7 @@ class TestClient(unittest.TestCase):
                 self.client.put(metric, value, timestamp)
             except ServerSocketException as exp:
                 message = exp.args[0]
-                self.fail(f"РћС€РёР±РєР° РІС‹Р·РѕРІР° client.put("
+                self.fail(f"Call error  client.put("
                           f"'{metric}', {value}, timestamp={timestamp})\n{message}")
 
     @patch("socket.create_connection", ServerSocket.create_connection)
@@ -93,7 +94,7 @@ class TestClient(unittest.TestCase):
             rsp = self.client.get("test")
         except ServerSocketException as exp:
             message = exp.args[0]
-            self.fail(f"РћС€РёР±РєР° РІС‹Р·РѕРІР° client.get('test')\n{message}")
+            self.fail(f"Call error  client.get('test')\n{message}")
 
         metrics_fixture = {
             "test": [(1, .5), (2, .4)],
@@ -107,7 +108,7 @@ class TestClient(unittest.TestCase):
             rsp = self.client.get("*")
         except ServerSocketException as exp:
             message = exp.args[0]
-            self.fail(f"РћС€РёР±РєР° РІС‹Р·РѕРІР° client.get('*')\n{message}")
+            self.fail(f"Call error client.get('*')\n{message}")
 
         metrics_fixture = {
             "test": [(1, .5), (2, .4)],
@@ -122,7 +123,7 @@ class TestClient(unittest.TestCase):
             rsp = self.client.get("key_not_exists")
         except ServerSocketException as exp:
             message = exp.args[0]
-            self.fail(f"РћС€РёР±РєР° РІС‹Р·РѕРІР° client.get('key_not_exists')\n{message}")
+            self.fail(f"Call error client.get('key_not_exists')\n{message}")
 
         self.assertEqual({}, rsp, "check rsp eq {}")
 
@@ -134,4 +135,4 @@ class TestClient(unittest.TestCase):
                               self.client.get, "get_client_error")
         except ServerSocketException as exp:
             message = exp.args[0]
-            self.fail(f"РќРµРєРѕСЂСЂРµРєС‚РЅРѕ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ СЃРѕРѕР±С‰РµРЅРёРµ СЃРµСЂРІРµСЂР° РѕР± РѕС€РёР±РєРµ: {message}")
+            self.fail(f"Incorrectly processed server error message: {message}")
